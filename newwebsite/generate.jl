@@ -18,7 +18,7 @@ end
 import Pkg
 
 # ╔═╡ 257b4034-3ef7-4a7b-8384-c8d25e618ae2
-Pkg.activate(".")
+Pkg.activate("."); Pkg.instantiate()
 
 # ╔═╡ ddb7022e-5404-4278-9069-97d9730f277e
 using JSON3
