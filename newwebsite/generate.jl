@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.2
+# v0.17.3
 
 using Markdown
 using InteractiveUtils
@@ -35,11 +35,17 @@ using PlutoSliderServer
 # ╔═╡ c64ebd9b-66a3-4f6c-8f8b-36f6b9ce8f19
 using PlutoHooks
 
+# ╔═╡ 7c55e578-f269-4570-bd98-b1bf22eb0f36
+using PlutoTest: @skip_as_script
+
 # ╔═╡ 6ee83d91-b1d1-4b1e-95ca-6874e44167da
 using UUIDs
 
-# ╔═╡ 8781d8d4-0dff-4b24-9500-6ba4ec586f9b
-pluto_cache_dir = mktempdir()
+# ╔═╡ e2fc5eab-e333-4ff8-951b-89fdfe40eef8
+using Chain
+
+# ╔═╡ 524bce46-ffbd-40a6-83ce-a938a73a5059
+PREPATH = "18S191-reduced"
 
 # ╔═╡ d83ee9b9-d255-4217-a776-3b0f4f168c8f
 @bind regenerate Button("Regenerate!")
@@ -53,13 +59,16 @@ end
 # ╔═╡ e8169711-6e94-45e0-9c41-b4d4692af328
 const PROJECT_ROOT = let
 	regenerate
-	joinpath(@__DIR__, "..")
+	joinpath(@__DIR__, "..") |> normpath
 end
+
+# ╔═╡ 8781d8d4-0dff-4b24-9500-6ba4ec586f9b
+pluto_cache_dir = mkpath(joinpath(PROJECT_ROOT, "pluto_state_cache"))
 
 # ╔═╡ 6eb94b8c-b972-4c80-9644-1bd6568dc943
 output_dir = let
 	PROJECT_ROOT
-	mktempdir()
+	joinpath(PROJECT_ROOT, "build")
 end
 
 # ╔═╡ 149b7852-ae23-447a-80bb-24cdd7993cfe
@@ -92,9 +101,6 @@ end
 # ╔═╡ 43969dd1-f175-4399-8758-5a69f94595e7
 book_model = JSON3.read(read("./book_model_small.json", String), Vector{Chapter})
 
-# ╔═╡ 9126901e-50fa-4d4d-8d9a-739395d6490d
-
-
 # ╔═╡ 91ca4a45-137c-4378-803b-c6b2f036ac96
 import Pluto
 
@@ -122,13 +128,13 @@ file_server_address(paths::AbstractString...) = join([
 ], "/")
 
 # ╔═╡ 35b80456-039e-45bc-963e-5466a3e9c3a7
-@use_task([]) do 
+@skip_as_script @use_task([]) do 
 	sleep(1)
 	error("asdf")
 end
 
 # ╔═╡ a965eb6b-8c70-4986-a7b1-99c820c45716
-@use_task([output_dir, file_server_port]) do
+@skip_as_script @use_task([output_dir, file_server_port]) do
 
 	run(`$(Deno_jll.deno()) run --allow-net --allow-read https://deno.land/std@0.115.0/http/file_server.ts $(output_dir) --cors --port $(file_server_port)`)
 
@@ -144,6 +150,16 @@ md"""
 # Sidebar
 """
 
+# ╔═╡ 4489fbec-39b9-454f-ad17-3a1101d335ce
+md"""
+# Title headers inside notebooks
+"""
+
+# ╔═╡ 8eac52e6-6a5e-4519-9b4c-80aadbf27573
+function flatten_path(input::String)
+	join(input |> splitpath, "_")
+end
+
 # ╔═╡ 444502c9-33b5-4bb2-9a8d-a8d8e1adb632
 function sidebar_code(book_model)
     @htl("""
@@ -151,8 +167,8 @@ function sidebar_code(book_model)
     <div class="container sidebar-sticky">
     <div class="sidebar-about">
     <br>
-    <img src="/assets/MIT_logo.svg" style="width: 80px; height: auto; display: inline">
-    <img src="/assets/julia-logo.svg" style="margin-left:1em; width: 80px; height: auto; display: inline">
+    <img src="/$PREPATH/assets/MIT_logo.svg" style="width: 80px; height: auto; display: inline">
+    <img src="/$PREPATH/assets/julia-logo.svg" style="margin-left:1em; width: 80px; height: auto; display: inline">
     <div style="font-weight: bold; margin-bottom: 0.5em"><a href="/semesters/">Spring 2021</a> <span style="opacity: 0.6;">| MIT 18.S191/6.S083/22.S092</span></div>
     <h1><a href="/">Introduction to Computational Thinking</a></h1>
     <h2>Math from computation, math with computation</h2>
@@ -162,14 +178,13 @@ function sidebar_code(book_model)
     <style>
     </style>
     <nav class="sidebar-nav" style="opacity: 0.9">
-    <a class="sidebar-nav-item {{ispage /index.html}}active{{end}}" href="/"><b>Welcome</b></a>
-    <a class="sidebar-nav-item {{ispage /reviews/}}active{{end}}" href="/reviews/">Class Reviews</a>
-    <a class="sidebar-nav-item {{ispage /logistics/}}active{{end}}" href="/logistics/">Class Logistics</a>
-    <a class="sidebar-nav-item {{ispage /homework/}}active{{end}}" href="/homework/">Homework</a>
-    <a class="sidebar-nav-item {{ispage /syllabus/}}active{{end}}" href="/syllabus/">Syllabus and videos</a>
-    <a class="sidebar-nav-item {{ispage /installation/}}active{{end}}" href="/installation/">Software installation</a>
-    <a class="sidebar-nav-item {{ispage /cheatsheets/}}active{{end}}" href="/cheatsheets/">Cheatsheets</a>
-    <a class="sidebar-nav-item {{ispage /semesters/}}active{{end}}" href="/semesters/">Previous semesters</a>
+    <a class="sidebar-nav-item {{ispage /index.html}}active{{end}}" href="/$PREPATH/"><b>Welcome</b></a>
+    <a class="sidebar-nav-item {{ispage /reviews/}}active{{end}}" href="/$PREPATH/reviews/">Class Reviews</a>
+    <a class="sidebar-nav-item {{ispage /logistics/}}active{{end}}" href="/$PREPATH/logistics/">Class Logistics</a>
+    <a class="sidebar-nav-item {{ispage /syllabus/}}active{{end}}" href="/$PREPATH/syllabus/">Syllabus and videos</a>
+    <a class="sidebar-nav-item {{ispage /installation/}}active{{end}}" href="/$PREPATH/installation/">Software installation</a>
+    <a class="sidebar-nav-item {{ispage /cheatsheets/}}active{{end}}" href="/$PREPATH/cheatsheets/">Cheatsheets</a>
+    <a class="sidebar-nav-item {{ispage /semesters/}}active{{end}}" href="/$PREPATH/semesters/">Previous semesters</a>
     <br>
     $(map(enumerate(book_model)) do (chapter_number, chap)
 		@htl("""
@@ -179,8 +194,10 @@ function sidebar_code(book_model)
 
 			notebook_name = 
 				basename(without_pluto_file_extension(section.notebook_path))
+			notebook_id = flatten_path(without_pluto_file_extension(section.notebook_path))
+			
 		    @htl("""
-		    <a class="sidebar-nav-item {{ispage /$notebook_name/}}active{{end}}" href="/$notebook_name/"><b>$(chapter_number).$(section_number)</b> - <em>$(section.name)</em></a>
+		    <a class="sidebar-nav-item {{ispage /$notebook_name/}}active{{end}}" href="/$PREPATH/$notebook_id/"><b>$(chapter_number).$(section_number)</b> - <em>$(section.name)</em></a>
 		    """)
 		end)
 		""")
@@ -195,16 +212,6 @@ end
 
 # ╔═╡ 544518ea-d36d-4e80-855e-93895a8cc35d
 sidebar = sidebar_code(book_model)
-
-# ╔═╡ 4489fbec-39b9-454f-ad17-3a1101d335ce
-md"""
-# Title headers inside notebooks
-"""
-
-# ╔═╡ 8eac52e6-6a5e-4519-9b4c-80aadbf27573
-function flatten_path(input::String)
-	join(input |> splitpath, "_")
-end
 
 # ╔═╡ 32540d48-becf-482a-990c-4cd4d13d93f3
 function output_notebook_relpath(input::String)
@@ -224,7 +231,7 @@ output_notebook_relpath(first_section)
 import Random
 
 # ╔═╡ bb5bca01-8f95-49a5-8e50-2ad013c6b804
-run(`open $(pluto_notebooks_output_dir)`)
+@skip_as_script run(`open $(pluto_notebooks_output_dir)`)
 
 # ╔═╡ 9979265f-60dd-42d4-9384-afaf4bf53ba2
 md"""Show header preview: $(@bind show_header_preview html"<input type=checkbox>")"""
@@ -299,6 +306,44 @@ md"""
 (using PlutoSliderServer)
 """
 
+# ╔═╡ d15f2d13-0885-4da2-950d-fbbdd83f3907
+md"""
+# Generate landing non-Pluto pages from markdown, add sidebar
+"""
+
+# ╔═╡ 9cb9559a-cbe4-4a4a-b974-cb9a3573f67d
+import Franklin
+
+# ╔═╡ fbfcd2b0-3fb0-4999-ba59-4706437a501e
+begin
+	current_dir = pwd()
+	website_dir = joinpath(PROJECT_ROOT, "website")
+	franklin_page_dir = joinpath(website_dir, "__site")
+	isdir(franklin_page_dir) && rm(franklin_page_dir, recursive = true)
+	#mkpath(franklin_page_dir)
+	cd(website_dir)
+	Franklin.optimize(; minify = false)
+	#cp(joinpath(website_dir, "__site"), franklin_page_dir, force = true)
+	cd(current_dir)
+end
+
+# ╔═╡ 5c69b7bd-6b18-496f-bcd5-3251a5eb0dd8
+franklin_pages = @chain begin
+	franklin_page_dir
+	readdir(join = true)
+	filter(isdir, _)
+	filter(x -> basename(x) != "css", _)
+	[_; franklin_page_dir]
+end
+
+# ╔═╡ 77617779-76f0-4dec-aeea-cda321c71c9e
+md"""
+# Move to joint directory
+"""
+
+# ╔═╡ 190e776a-600e-41a4-b4de-08884036d610
+output_dir
+
 # ╔═╡ 7ec64792-82d4-454d-83ce-d507d66e80e7
 md"""
 # Generate `index.html` files for notebooks
@@ -329,7 +374,7 @@ web_preview(args...) = let
 end
 
 # ╔═╡ 9b12c862-3604-4046-8d68-89dd2d198883
-web_preview()
+@skip_as_script web_preview()
 
 # ╔═╡ e6e791d7-0f29-404a-8bdf-0c5f25d48da7
 index_styles(root_dir=".") = @htl("""
@@ -444,6 +489,33 @@ notebook_index_styles = @htl("""
 </style>
 """);
 
+# ╔═╡ 35d20fb6-be54-4d6c-b6aa-5bc2529dafea
+function add_sidebar(page_dir)
+	page_name = basename(page_dir)
+	rel_page_dir = page_name == "__site" ? "." : joinpath("..", page_name)
+	index_page = joinpath(rel_page_dir, "main.html")
+	new_page_dir = page_dir # joinpath(output_dir, page_name)
+	isdir(new_page_dir) || mkpath(new_page_dir)
+
+	
+	@chain index_page begin
+		iframe
+		html_page(@htl("""
+		$(notebook_index_styles)
+
+		$(_)"""), "/" * PREPATH)
+		string
+		"<!doctype html>\n" * _
+		write(joinpath(new_page_dir, "index.html")	, _)
+	end
+end
+
+# ╔═╡ d276b28e-a379-4804-ad25-f7d396b4ffb6
+for page_dir in franklin_pages
+	mv(joinpath(page_dir, "index.html"), joinpath(page_dir, "main.html"))
+	add_sidebar(page_dir)
+end; FRANKLIN_DONE = 1
+
 # ╔═╡ 1780b6d1-5e53-48e0-8675-f78645e7c576
 function notebook_html_page(section)
 	new_jl_name = flatten_path(section.notebook_path)
@@ -531,13 +603,27 @@ notebook_index_filenames = flatmap(enumerate(book_model)) do (chapter_number, ch
 		write(new_html_path, "<!doctype html>\n" * string(notebook_html_page(section)))
 		new_html_path	
 	end
+end; PLUTO_DONE = 0
+
+# ╔═╡ db665156-3a33-4c33-a979-74ef2c9f5792
+let
+	PLUTO_DONE
+	FRANKLIN_DONE
+
+	folders = filter(startswith(r"note|assets"), readdir(output_dir))
+	for folder in folders
+		cp(joinpath(output_dir, folder), joinpath(franklin_page_dir, folder))
+	end
 end
 
 # ╔═╡ 811bffb7-1041-4f96-b2e6-f24ddce8d753
 let
 	notebook_index_filenames
-	relpath(index_html_filename(book_model[1].contents[1]), output_dir) |> web_preview
+	@skip_as_script relpath(index_html_filename(book_model[1].contents[1]), output_dir) |> web_preview
 end
+
+# ╔═╡ 291dec1b-a998-4c56-b06f-008cd3a6ccd7
+TableOfContents()
 
 # ╔═╡ Cell order:
 # ╠═3f2428bc-4ba4-11ec-3f1b-1326777bfdd2
@@ -545,17 +631,17 @@ end
 # ╠═ddb7022e-5404-4278-9069-97d9730f277e
 # ╠═60d603c3-c1e7-4d49-820f-288d20de70f5
 # ╠═6a3614fb-81bd-474d-85cf-06725846a6c0
+# ╠═524bce46-ffbd-40a6-83ce-a938a73a5059
 # ╠═8781d8d4-0dff-4b24-9500-6ba4ec586f9b
 # ╟─d83ee9b9-d255-4217-a776-3b0f4f168c8f
 # ╟─41b00a73-f42d-4e9e-86bb-49ff9105d949
-# ╟─e8169711-6e94-45e0-9c41-b4d4692af328
-# ╟─6eb94b8c-b972-4c80-9644-1bd6568dc943
-# ╟─149b7852-ae23-447a-80bb-24cdd7993cfe
+# ╠═e8169711-6e94-45e0-9c41-b4d4692af328
+# ╠═6eb94b8c-b972-4c80-9644-1bd6568dc943
+# ╠═149b7852-ae23-447a-80bb-24cdd7993cfe
 # ╠═68bff1d9-8fe4-4b88-82a2-49bbf6209019
 # ╠═0fbcf5d1-b342-427c-a09d-e2f84725ba7f
 # ╠═0abe998c-f69c-49de-a49f-6c4bbcb6c4e1
 # ╠═43969dd1-f175-4399-8758-5a69f94595e7
-# ╠═9126901e-50fa-4d4d-8d9a-739395d6490d
 # ╠═b14f33ae-89a7-473b-ac9b-1db0208faca7
 # ╠═91ca4a45-137c-4378-803b-c6b2f036ac96
 # ╠═d45c8768-87e2-4f3c-8763-089ec43f1733
@@ -563,6 +649,7 @@ end
 # ╠═c64ebd9b-66a3-4f6c-8f8b-36f6b9ce8f19
 # ╠═fb914eec-bc9c-4dd4-b92e-f507c7d0b150
 # ╠═680b5653-a0a0-48ad-87ca-583a1655a05c
+# ╠═7c55e578-f269-4570-bd98-b1bf22eb0f36
 # ╠═c012ae32-3b48-460c-8b1a-0b3e06f5fda0
 # ╠═06bfaeee-a6ee-439c-b965-94d0455b0337
 # ╠═35b80456-039e-45bc-963e-5466a3e9c3a7
@@ -591,10 +678,20 @@ end
 # ╟─5f93b932-6739-4b7e-bfdb-1bc1f7d57e65
 # ╟─96aa002c-cebc-41f7-97cf-ecd02081b6ce
 # ╠═866746a1-8102-431c-94e5-f93f6c98e825
+# ╟─d15f2d13-0885-4da2-950d-fbbdd83f3907
+# ╠═9cb9559a-cbe4-4a4a-b974-cb9a3573f67d
+# ╠═fbfcd2b0-3fb0-4999-ba59-4706437a501e
+# ╠═5c69b7bd-6b18-496f-bcd5-3251a5eb0dd8
+# ╠═e2fc5eab-e333-4ff8-951b-89fdfe40eef8
+# ╠═d276b28e-a379-4804-ad25-f7d396b4ffb6
+# ╠═35d20fb6-be54-4d6c-b6aa-5bc2529dafea
+# ╟─77617779-76f0-4dec-aeea-cda321c71c9e
+# ╠═190e776a-600e-41a4-b4de-08884036d610
+# ╠═db665156-3a33-4c33-a979-74ef2c9f5792
 # ╟─7ec64792-82d4-454d-83ce-d507d66e80e7
 # ╠═729efdbc-9556-4d34-bcef-1dfff2fba6bb
 # ╠═ccdea15d-1182-4d96-a7ab-26aa59a6002e
-# ╠═811bffb7-1041-4f96-b2e6-f24ddce8d753
+# ╟─811bffb7-1041-4f96-b2e6-f24ddce8d753
 # ╠═c0d7eb1c-7b6f-446f-ab50-7d7a49a5b1b1
 # ╠═1780b6d1-5e53-48e0-8675-f78645e7c576
 # ╠═669ca7b1-9433-4391-b849-2f1cc7f4aa49
@@ -603,3 +700,4 @@ end
 # ╠═29a3e3f4-1c7a-44e4-89c2-ce12d31f4fd7
 # ╟─4d78b60b-7311-4735-892b-1719729611d7
 # ╠═276ef05c-25b3-4450-9dfc-9bdd9525c00c
+# ╠═291dec1b-a998-4c56-b06f-008cd3a6ccd7

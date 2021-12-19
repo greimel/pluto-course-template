@@ -2,9 +2,9 @@
 
 # include("../tools/types.jl")
 # include("../tools/book_model.jl")
-include("../tools/sidebar.jl")
+# include("../tools/sidebar.jl")
 
-huhh2 = HTML(sidebar_code(book_model))
+# huhh2 = HTML(sidebar_code(book_model))
 +++
 
 <!--
@@ -28,7 +28,7 @@ The latter allows you to plug in values that you would have defined here.
              deployed page to be in a subfolder e.g.: `YourPackage.jl/web/`.
 -->
 @def title       = "Introduction to Computational Thinking"
-@def prepath     = "Spring21"
+@def prepath     = "18S191-reduced"
 @def description = """
                    Introduction to Computational thinking. Online course website.
                    """
