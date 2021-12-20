@@ -150,6 +150,27 @@ md"""
 # Sidebar
 """
 
+# ╔═╡ 2bee2fc7-3322-457f-a835-028c80eaf059
+TITLE = "Introduction to Computational Thinking"
+
+# ╔═╡ a0057e4c-0bcf-4970-8a2b-0412ad5af510
+SUBTITLE = "Math from computation, math with computation"
+
+# ╔═╡ 3e93e57c-3660-416f-9874-d43abf99e60e
+INSTRUCTORS = [
+	(name = "Alan Edelman", href= "http://math.mit.edu/∼edelman"),
+	(name = "David P. Sanders", href = "http://sistemas.fciencias.unam.mx/~dsanders/"),
+	(name = "Charles E. Leiserson", href = "https://people.csail.mit.edu/cel/")
+]
+	#</a> &amp; <a href=></a>
+
+# ╔═╡ fd5f6637-3223-4f0b-94a6-ace86f5a5926
+instructors = map(INSTRUCTORS) do (; name, href)
+	@htl("""
+	<a href="$href">$name</a>
+	""")
+end |> x -> join(x, ", ")
+
 # ╔═╡ 4489fbec-39b9-454f-ad17-3a1101d335ce
 md"""
 # Title headers inside notebooks
@@ -170,9 +191,9 @@ function sidebar_code(book_model)
     <img src="/$PREPATH/assets/MIT_logo.svg" style="width: 80px; height: auto; display: inline">
     <img src="/$PREPATH/assets/julia-logo.svg" style="margin-left:1em; width: 80px; height: auto; display: inline">
     <div style="font-weight: bold; margin-bottom: 0.5em"><a href="/semesters/">Spring 2021</a> <span style="opacity: 0.6;">| MIT 18.S191/6.S083/22.S092</span></div>
-    <h1><a href="/">Introduction to Computational Thinking</a></h1>
-    <h2>Math from computation, math with computation</h2>
-    <div style="line-height:18px; font-size: 15px; opacity: 0.85">by <a href="http://math.mit.edu/~edelman">Alan Edelman</a>, <a href="http://sistemas.fciencias.unam.mx/~dsanders/">David P. Sanders</a> &amp; <a href="https://people.csail.mit.edu/cel/">Charles E. Leiserson</a></div>
+    <h1><a href="/">$TITLE</a></h1>
+    <h2>$SUBTITLE</h2>
+    <div style="line-height:18px; font-size: 15px; opacity: 0.85">by $(instructors)</div>
     </div>
     <br>
     <style>
@@ -659,6 +680,10 @@ TableOfContents()
 # ╟─a24bf899-87b0-4a2e-a6d4-30ac2aad4820
 # ╠═d7098dc2-fe08-4545-921c-6ad3d2648c91
 # ╟─2bba13d3-0c1d-4d17-bd70-526ce70407fb
+# ╠═2bee2fc7-3322-457f-a835-028c80eaf059
+# ╠═a0057e4c-0bcf-4970-8a2b-0412ad5af510
+# ╠═3e93e57c-3660-416f-9874-d43abf99e60e
+# ╠═fd5f6637-3223-4f0b-94a6-ace86f5a5926
 # ╠═444502c9-33b5-4bb2-9a8d-a8d8e1adb632
 # ╠═544518ea-d36d-4e80-855e-93895a8cc35d
 # ╟─4489fbec-39b9-454f-ad17-3a1101d335ce
