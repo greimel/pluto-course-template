@@ -44,6 +44,33 @@ using UUIDs
 # ╔═╡ e2fc5eab-e333-4ff8-951b-89fdfe40eef8
 using Chain
 
+# ╔═╡ 004b0769-ee4a-4749-86eb-97a3c2322452
+md"""
+# Customization
+"""
+
+# ╔═╡ 95fd01d9-2555-4e5b-a044-eab02e2967bf
+md"""
+## Course
+"""
+
+# ╔═╡ 2bee2fc7-3322-457f-a835-028c80eaf059
+TITLE = "A Great Course"
+
+# ╔═╡ a0057e4c-0bcf-4970-8a2b-0412ad5af510
+SUBTITLE = "Content and Code"
+
+# ╔═╡ 4be56e57-fea0-4fbe-9659-44bed594b1b2
+INSTITUTION = "University of Greatness"
+
+# ╔═╡ ab7186a4-2287-41da-a939-70f142bfeacd
+TERM = "Spring 2022"
+
+# ╔═╡ 83130e69-9b67-44b5-ad32-500162abc0d2
+md"""
+## Website
+"""
+
 # ╔═╡ 5b7892c6-ca5c-4c3a-b5d8-0a6323ee2fa9
 md"""
 `PREPATH` is used to specify the base URLs; if your site should be
@@ -155,25 +182,53 @@ md"""
 # Sidebar
 """
 
-# ╔═╡ 2bee2fc7-3322-457f-a835-028c80eaf059
-TITLE = "Introduction to Computational Thinking"
-
-# ╔═╡ a0057e4c-0bcf-4970-8a2b-0412ad5af510
-SUBTITLE = "Math from computation, math with computation"
+# ╔═╡ fd5f6637-3223-4f0b-94a6-ace86f5a5926
+function instructors(INSTRUCTORS)
+	tmp = map(INSTRUCTORS) do (; name, href)
+		"""
+		<a href="$href">$name</a>
+		"""
+	end
+	join(tmp, ", ", "&amp " ) |> HTML
+end
 
 # ╔═╡ 3e93e57c-3660-416f-9874-d43abf99e60e
 INSTRUCTORS = [
-	(name = "Alan Edelman", href= "http://math.mit.edu/∼edelman"),
-	(name = "David P. Sanders", href = "http://sistemas.fciencias.unam.mx/~dsanders/"),
-	(name = "Charles E. Leiserson", href = "https://people.csail.mit.edu/cel/")
+	(name = "Person 1", href= ""),
+	(name = "Person 2", href = "")
+] |> instructors
+
+# ╔═╡ 02e00e09-76a5-4f38-8557-4d9caf280b4c
+homepage = (page = "/index.html", href = "$SLASH_PREPATH/", title = "Welcome")
+
+# ╔═╡ 01a2336a-5c04-4d5a-bb0b-a9c704517dbf
+pages = [
+	(page = "/reviews", title = "Class Reviews"),
+	(page = "/logistics/", title = "Class Logistics"),
+	(page = "/syllabus/", title = "Syllabus and videos"),
+	(page = "/installation/", title = "Software installation"),
+	(page = "/cheatsheets/", title = "Cheatsheets"),
+	(page = "/semesters/", title = "Previous semesters")
 ]
 
-# ╔═╡ fd5f6637-3223-4f0b-94a6-ace86f5a5926
-instructors = map(INSTRUCTORS) do (; name, href)
+# ╔═╡ feaed8af-05d0-4b80-9f69-8f827f9343a8
+bold(text) = @htl("<b>$(text)</b>")
+
+# ╔═╡ 98fb1e6a-c57c-4d66-972f-3471c6c15dd7
+function sidebar_page(; page, title, href="$(SLASH_PREPATH)$(page)", isbold = false)
+	title = isbold ? bold(title) : title
 	@htl("""
-	<a href="$href">$name</a>
+	<a class="sidebar-nav-item {{ispage $(page)}}active{{end}}" href="$(href)">$(title)</a>
 	""")
-end |> x -> join(x, ", ", " &amp; ") |> HTML
+end
+
+# ╔═╡ 6775885d-0340-462e-bdeb-1e9076d94925
+function sidebar_pages(pages)
+	vec = map(pages) do page
+		sidebar_page(; page...)
+	end
+	HTML(join(vec, "\n"))
+end
 
 # ╔═╡ 4489fbec-39b9-454f-ad17-3a1101d335ce
 md"""
@@ -194,22 +249,17 @@ function sidebar_code(book_model)
     <br>
     <img src="$(SLASH_PREPATH)/assets/MIT_logo.svg" style="width: 80px; height: auto; display: inline">
     <img src="$(SLASH_PREPATH)/assets/julia-logo.svg" style="margin-left:1em; width: 80px; height: auto; display: inline">
-    <div style="font-weight: bold; margin-bottom: 0.5em"><a href="/semesters/">Spring 2021</a> <span style="opacity: 0.6;">| MIT 18.S191/6.S083/22.S092</span></div>
-    <h1><a href="/">$TITLE</a></h1>
-    <h2>$SUBTITLE</h2>
-    <div style="line-height:18px; font-size: 15px; opacity: 0.85">by $(instructors)</div>
+    <div style="font-weight: bold; margin-bottom: 0.5em"><a href="/semesters/">$(TERM)</a> <span style="opacity: 0.6;">| $(INSTITUTION)</span></div>
+    <h1><a href="/">$(TITLE)</a></h1>
+    <h2>$(SUBTITLE)</h2>
+    <div style="line-height:18px; font-size: 15px; opacity: 0.85">by $(INSTRUCTORS)</div>
     </div>
     <br>
     <style>
     </style>
     <nav class="sidebar-nav" style="opacity: 0.9">
-    <a class="sidebar-nav-item {{ispage /index.html}}active{{end}}" href="$(SLASH_PREPATH)/"><b>Welcome</b></a>
-    <a class="sidebar-nav-item {{ispage /reviews/}}active{{end}}" href="$(SLASH_PREPATH)/reviews/">Class Reviews</a>
-    <a class="sidebar-nav-item {{ispage /logistics/}}active{{end}}" href="$(SLASH_PREPATH)/logistics/">Class Logistics</a>
-    <a class="sidebar-nav-item {{ispage /syllabus/}}active{{end}}" href="$(SLASH_PREPATH)/syllabus/">Syllabus and videos</a>
-    <a class="sidebar-nav-item {{ispage /installation/}}active{{end}}" href="$(SLASH_PREPATH)/installation/">Software installation</a>
-    <a class="sidebar-nav-item {{ispage /cheatsheets/}}active{{end}}" href="$(SLASH_PREPATH)/cheatsheets/">Cheatsheets</a>
-    <a class="sidebar-nav-item {{ispage /semesters/}}active{{end}}" href="$(SLASH_PREPATH)/semesters/">Previous semesters</a>
+	$(sidebar_page(; homepage..., isbold = true))
+	$(sidebar_pages(pages))
     <br>
     $(map(enumerate(book_model)) do (chapter_number, chap)
 		@htl("""
@@ -695,8 +745,18 @@ TableOfContents()
 # ╠═ddb7022e-5404-4278-9069-97d9730f277e
 # ╠═60d603c3-c1e7-4d49-820f-288d20de70f5
 # ╠═6a3614fb-81bd-474d-85cf-06725846a6c0
+# ╟─004b0769-ee4a-4749-86eb-97a3c2322452
+# ╟─95fd01d9-2555-4e5b-a044-eab02e2967bf
+# ╠═2bee2fc7-3322-457f-a835-028c80eaf059
+# ╠═a0057e4c-0bcf-4970-8a2b-0412ad5af510
+# ╠═3e93e57c-3660-416f-9874-d43abf99e60e
+# ╠═4be56e57-fea0-4fbe-9659-44bed594b1b2
+# ╠═ab7186a4-2287-41da-a939-70f142bfeacd
+# ╟─83130e69-9b67-44b5-ad32-500162abc0d2
 # ╠═5b7892c6-ca5c-4c3a-b5d8-0a6323ee2fa9
 # ╠═88e1e91d-0d48-42e0-b4ab-4866624fd745
+# ╠═02e00e09-76a5-4f38-8557-4d9caf280b4c
+# ╠═01a2336a-5c04-4d5a-bb0b-a9c704517dbf
 # ╠═c0768146-5ea0-4736-94f8-2c1a2affa922
 # ╠═8781d8d4-0dff-4b24-9500-6ba4ec586f9b
 # ╟─d83ee9b9-d255-4217-a776-3b0f4f168c8f
@@ -725,10 +785,10 @@ TableOfContents()
 # ╟─a24bf899-87b0-4a2e-a6d4-30ac2aad4820
 # ╠═d7098dc2-fe08-4545-921c-6ad3d2648c91
 # ╟─2bba13d3-0c1d-4d17-bd70-526ce70407fb
-# ╠═2bee2fc7-3322-457f-a835-028c80eaf059
-# ╠═a0057e4c-0bcf-4970-8a2b-0412ad5af510
-# ╠═3e93e57c-3660-416f-9874-d43abf99e60e
 # ╠═fd5f6637-3223-4f0b-94a6-ace86f5a5926
+# ╠═feaed8af-05d0-4b80-9f69-8f827f9343a8
+# ╠═98fb1e6a-c57c-4d66-972f-3471c6c15dd7
+# ╠═6775885d-0340-462e-bdeb-1e9076d94925
 # ╠═444502c9-33b5-4bb2-9a8d-a8d8e1adb632
 # ╠═544518ea-d36d-4e80-855e-93895a8cc35d
 # ╟─4489fbec-39b9-454f-ad17-3a1101d335ce
