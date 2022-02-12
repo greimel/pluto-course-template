@@ -18,21 +18,6 @@ You can add your own rules if you so desire by either:
 The latter allows you to plug in values that you would have defined here.
 -->
 
-<!-- META DEFINITIONS
-  NOTE:
-  - prepath: this is used to specify the base URLs; if your site should be
-             available at `https://username.github.io/YourPackage.jl/` then the
-             pre-path should be `YourPackage.jl`. If your site is meant to be
-             hosted on a specific URL such as `https://awesomepkg.org` then set
-             `prepath` to an empty string. Finally, adjust this if you want the
-             deployed page to be in a subfolder e.g.: `YourPackage.jl/web/`.
--->
-@def title       = "Introduction to Computational Thinking"
-@def prepath     = "18S191-reduced"
-@def description = """
-                   Introduction to Computational thinking. Online course website.
-                   """
-@def authors     = "MIT"
 
 <!--  NAVBAR SPECS
   NOTE:
