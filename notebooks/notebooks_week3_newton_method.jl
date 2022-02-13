@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.2
+# v0.18.0
 
 using Markdown
 using InteractiveUtils
@@ -15,58 +15,10 @@ macro bind(def, element)
 end
 
 # ╔═╡ f5450eab-0f9f-4b7f-9b80-992d3c553ba9
-HTML("<div style=\"\nposition: absolute;\nwidth: calc(100% - 30px);\nborder: 50vw solid #282936;\nborder-top: 500px solid #282936;\nborder-bottom: none;\nbox-sizing: content-box;\nleft: calc(-50vw + 15px);\ntop: -500px;\nheight: 500px;\npointer-events: none;\n\"></div>\n\n<div style=\"\nheight: 500px;\nwidth: 100%;\nbackground: #282936;\ncolor: #fff;\npadding-top: 68px;\n\">\n<span style=\"\nfont-family: Vollkorn, serif;\nfont-weight: 700;\nfont-feature-settings: 'lnum', 'pnum';\n\"> <p style=\"\nfont-size: 1.5rem;\nopacity: .8;\n\"><em>Section 1.1</em></p>\n<p style=\"text-align: center; font-size: 2rem;\">\n<em> The Newton Method </em>\n</p>\n\n<p style=\"\nfont-size: 1.5rem;\ntext-align: center;\nopacity: .8;\n\"><em>Lecture Video</em></p>\n<div style=\"display: flex; justify-content: center;\">\n<div  notthestyle=\"position: relative; right: 0; top: 0; z-index: 300;\">\n<iframe src=\"https://www.youtube.com/embed/Wjcx9sNSLP8\" width=400 height=250  frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe></div>\n</div>\n</div>\n\n<style>\nbody {\noverflow-x: hidden;\n}\n</style>")
+HTML("    <div style=\"\n    position: absolute;\n    width: calc(100% - 30px);\n    border: 50vw solid #282936;\n    border-top: 500px solid #282936;\n    border-bottom: none;\n    box-sizing: content-box;\n    left: calc(-50vw + 15px);\n    top: -500px;\n    height: 180px;\n    pointer-events: none;\n    \"></div>\n\n    <div style=\"\n    height: 180px;\n    width: 100%;\n    background: #282936;\n    color: #fff;\n    padding-top: 68px;\n    \">\n    <span style=\"\n    font-family: Vollkorn, serif;\n    font-weight: 700;\n    font-feature-settings: 'lnum', 'pnum';\n    \"> \n\t\n    <p style=\"text-align: center; font-size: 2rem;\">\n    <em>The Newton Method</em>\n    </p>\n\n\t\n\t\n    <style>\n    body {\n    overflow-x: hidden;\n    }\n    </style>")
 
 # ╔═╡ c09f092a-887e-11eb-1ccc-4367bf05602d
-html"""
-<div style="
-position: absolute;
-width: calc(100% - 30px);
-border: 50vw solid #282936;
-border-top: 500px solid #282936;
-border-bottom: none;
-box-sizing: content-box;
-left: calc(-50vw + 15px);
-top: -500px;
-height: 500px;
-pointer-events: none;
-"></div>
 
-<div style="
-height: 500px;
-width: 100%;
-background: #282936;
-color: #fff;
-padding-top: 68px;
-">
-<span style="
-font-family: Vollkorn, serif;
-font-weight: 700;
-font-feature-settings: 'lnum', 'pnum';
-"> <p style="
-font-size: 1.5rem;
-opacity: .8;
-"><em>Section 1.6</em></p>
-<p style="text-align: center; font-size: 2rem;">
-<em> The Newton Method </em>
-</p>
-
-<p style="
-font-size: 1.5rem;
-text-align: center;
-opacity: .8;
-"><em>Lecture Video</em></p>
-<div style="display: flex; justify-content: center;">
-<div  notthestyle="position: relative; right: 0; top: 0; z-index: 300;">
-<iframe src="https://www.youtube.com/embed/Wjcx9sNSLP8" width=400 height=250  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-</div>
-</div>
-
-<style>
-body {
-overflow-x: hidden;
-}
-</style>"""
 
 # ╔═╡ f4fda666-7b9c-11eb-0304-716c5e710462
 begin
