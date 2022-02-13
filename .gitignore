@@ -5,3 +5,4 @@ pluto_state_cache
 
 website/__site/
 build/
+website/config.md
