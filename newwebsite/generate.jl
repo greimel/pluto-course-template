@@ -32,8 +32,14 @@ using PlutoUI
 # ╔═╡ b14f33ae-89a7-473b-ac9b-1db0208faca7
 using PlutoSliderServer
 
+# ╔═╡ d45c8768-87e2-4f3c-8763-089ec43f1733
+using Pluto: without_pluto_file_extension
+
 # ╔═╡ c64ebd9b-66a3-4f6c-8f8b-36f6b9ce8f19
 using PlutoHooks
+
+# ╔═╡ fb914eec-bc9c-4dd4-b92e-f507c7d0b150
+using PlutoHooks: @use_task
 
 # ╔═╡ 7c55e578-f269-4570-bd98-b1bf22eb0f36
 using PlutoTest: @skip_as_script
@@ -83,8 +89,26 @@ begin
 	@skip_as_script PREPATH = ""
 end
 
+# ╔═╡ 2582ae89-616f-4a08-be81-0875362c1f7e
+md"""
+#### Add notebook header?
+"""
+
+# ╔═╡ 01a2336a-5c04-4d5a-bb0b-a9c704517dbf
+pages = [
+	(page = "/reviews/", title = "Class Reviews"),
+	(page = "/logistics/", title = "Class Logistics"),
+	(page = "/syllabus/", title = "Syllabus and videos"),
+	(page = "/installation/", title = "Software installation"),
+	(page = "/cheatsheets/", title = "Cheatsheets"),
+	(page = "/semesters/", title = "Previous semesters")
+]
+
 # ╔═╡ c0768146-5ea0-4736-94f8-2c1a2affa922
 SLASH_PREPATH = !isempty(PREPATH) ? "/" * PREPATH : ""
+
+# ╔═╡ 02e00e09-76a5-4f38-8557-4d9caf280b4c
+homepage = (page = "/index.html", href = "$SLASH_PREPATH/", title = "Welcome")
 
 # ╔═╡ d83ee9b9-d255-4217-a776-3b0f4f168c8f
 @bind regenerate Button("Regenerate!")
@@ -143,16 +167,10 @@ book_model = JSON3.read(read("./book_model_small.json", String), Vector{Chapter}
 # ╔═╡ 91ca4a45-137c-4378-803b-c6b2f036ac96
 import Pluto
 
-# ╔═╡ d45c8768-87e2-4f3c-8763-089ec43f1733
-import Pluto: without_pluto_file_extension
-
 # ╔═╡ ec4ac489-8b49-4c2d-be87-21bb3f70e06a
 md"""
 # Running a file server for dev
 """
-
-# ╔═╡ fb914eec-bc9c-4dd4-b92e-f507c7d0b150
-import PlutoHooks: @use_task
 
 # ╔═╡ 680b5653-a0a0-48ad-87ca-583a1655a05c
 import Deno_jll
@@ -194,25 +212,15 @@ end
 
 # ╔═╡ 3e93e57c-3660-416f-9874-d43abf99e60e
 INSTRUCTORS = [
-	(name = "Person 1", href= ""),
+	(name = "Person 1", href = ""),
 	(name = "Person 2", href = "")
 ] |> instructors
 
-# ╔═╡ 02e00e09-76a5-4f38-8557-4d9caf280b4c
-homepage = (page = "/index.html", href = "$SLASH_PREPATH/", title = "Welcome")
-
-# ╔═╡ 01a2336a-5c04-4d5a-bb0b-a9c704517dbf
-pages = [
-	(page = "/reviews", title = "Class Reviews"),
-	(page = "/logistics/", title = "Class Logistics"),
-	(page = "/syllabus/", title = "Syllabus and videos"),
-	(page = "/installation/", title = "Software installation"),
-	(page = "/cheatsheets/", title = "Cheatsheets"),
-	(page = "/semesters/", title = "Previous semesters")
-]
-
 # ╔═╡ feaed8af-05d0-4b80-9f69-8f827f9343a8
 bold(text) = @htl("<b>$(text)</b>")
+
+# ╔═╡ 4a7a342d-4bf2-455d-9cf9-52a827e180d4
+emph(text) = @htl("<em>$(text)</em>")
 
 # ╔═╡ 98fb1e6a-c57c-4d66-972f-3471c6c15dd7
 function sidebar_page(; page, title, href="$(SLASH_PREPATH)$(page)", isbold = false)
@@ -247,10 +255,9 @@ function sidebar_code(book_model)
     <div class="container sidebar-sticky">
     <div class="sidebar-about">
     <br>
-    <img src="$(SLASH_PREPATH)/assets/MIT_logo.svg" style="width: 80px; height: auto; display: inline">
     <img src="$(SLASH_PREPATH)/assets/julia-logo.svg" style="margin-left:1em; width: 80px; height: auto; display: inline">
-    <div style="font-weight: bold; margin-bottom: 0.5em"><a href="/semesters/">$(TERM)</a> <span style="opacity: 0.6;">| $(INSTITUTION)</span></div>
-    <h1><a href="/">$(TITLE)</a></h1>
+    <div style="font-weight: bold; margin-bottom: 0.5em"><a href="$(SLASH_PREPATH)/semesters/">$(TERM)</a> <span style="opacity: 0.6;">| $(INSTITUTION)</span></div>
+    <h1><a href="$(SLASH_PREPATH)/">$(TITLE)</a></h1>
     <h2>$(SUBTITLE)</h2>
     <div style="line-height:18px; font-size: 15px; opacity: 0.85">by $(INSTRUCTORS)</div>
     </div>
@@ -295,9 +302,6 @@ end
 
 # ╔═╡ a8ae5287-e7b6-4b68-ac26-4bc55ee86fe6
 output_notebook_relpath(s::Section) = output_notebook_relpath(s.notebook_path)
-
-# ╔═╡ ffe915ab-17c9-4ac2-a8b1-0554be11f787
-#first_section = book_model[1].contents[1]
 
 # ╔═╡ 5ec6013c-da21-4cdb-b43f-16d997bc8446
 import Random
@@ -380,7 +384,9 @@ md"""
 
 # ╔═╡ d15f2d13-0885-4da2-950d-fbbdd83f3907
 md"""
-# Generate landing non-Pluto pages from markdown, add sidebar
+# Generate non-Pluto pages from markdown, add sidebar
+
+_powered by Franklin.jl_
 """
 
 # ╔═╡ 9cb9559a-cbe4-4a4a-b974-cb9a3573f67d
@@ -549,7 +555,7 @@ function html_page(content, root_dir::String=".")
 	    $(index_styles(root_dir))
 	    <link rel="icon" href="$(root_dir)/assets/favicon.png">
 	
-	    <title>Introduction to Computational Thinking</title>
+	    <title>$TITLE</title>
 	</head>
 	
 	<body>
@@ -704,7 +710,7 @@ notebook_htmls_generated = let
 	output_filenames
 	
 	PlutoSliderServer.export_directory(pluto_notebooks_output_dir; Export_cache_dir=pluto_cache_dir)
-end
+end; GENERATED_NOTEBOOKS = 0
 
 # ╔═╡ ccdea15d-1182-4d96-a7ab-26aa59a6002e
 notebook_index_filenames = flatmap(enumerate(book_model)) do (chapter_number, chap)
@@ -717,7 +723,7 @@ notebook_index_filenames = flatmap(enumerate(book_model)) do (chapter_number, ch
 		write(new_html_path, "<!doctype html>\n" * string(notebook_html_page(section)))
 		new_html_path	
 	end
-end; PLUTO_DONE = 0
+end; PLUTO_DONE = GENERATED_NOTEBOOKS + 1
 
 # ╔═╡ db665156-3a33-4c33-a979-74ef2c9f5792
 let
@@ -753,8 +759,9 @@ TableOfContents()
 # ╠═4be56e57-fea0-4fbe-9659-44bed594b1b2
 # ╠═ab7186a4-2287-41da-a939-70f142bfeacd
 # ╟─83130e69-9b67-44b5-ad32-500162abc0d2
-# ╠═5b7892c6-ca5c-4c3a-b5d8-0a6323ee2fa9
+# ╟─5b7892c6-ca5c-4c3a-b5d8-0a6323ee2fa9
 # ╠═88e1e91d-0d48-42e0-b4ab-4866624fd745
+# ╟─2582ae89-616f-4a08-be81-0875362c1f7e
 # ╠═02e00e09-76a5-4f38-8557-4d9caf280b4c
 # ╠═01a2336a-5c04-4d5a-bb0b-a9c704517dbf
 # ╠═c0768146-5ea0-4736-94f8-2c1a2affa922
@@ -787,6 +794,7 @@ TableOfContents()
 # ╟─2bba13d3-0c1d-4d17-bd70-526ce70407fb
 # ╠═fd5f6637-3223-4f0b-94a6-ace86f5a5926
 # ╠═feaed8af-05d0-4b80-9f69-8f827f9343a8
+# ╠═4a7a342d-4bf2-455d-9cf9-52a827e180d4
 # ╠═98fb1e6a-c57c-4d66-972f-3471c6c15dd7
 # ╠═6775885d-0340-462e-bdeb-1e9076d94925
 # ╠═444502c9-33b5-4bb2-9a8d-a8d8e1adb632
@@ -795,7 +803,6 @@ TableOfContents()
 # ╠═8eac52e6-6a5e-4519-9b4c-80aadbf27573
 # ╠═32540d48-becf-482a-990c-4cd4d13d93f3
 # ╠═a8ae5287-e7b6-4b68-ac26-4bc55ee86fe6
-# ╠═ffe915ab-17c9-4ac2-a8b1-0554be11f787
 # ╠═6ee83d91-b1d1-4b1e-95ca-6874e44167da
 # ╠═5ec6013c-da21-4cdb-b43f-16d997bc8446
 # ╠═adc183d3-2615-4334-88f0-2f8f0876b4b7
@@ -803,8 +810,8 @@ TableOfContents()
 # ╠═f731fc20-2660-484c-bcc7-fbc1809a3b4a
 # ╠═48570953-88d3-4010-a5e3-2034bda26413
 # ╟─9979265f-60dd-42d4-9384-afaf4bf53ba2
-# ╟─b007e5cc-d7c3-4275-86fd-9098bc398b23
-# ╟─5f93b932-6739-4b7e-bfdb-1bc1f7d57e65
+# ╠═b007e5cc-d7c3-4275-86fd-9098bc398b23
+# ╠═5f93b932-6739-4b7e-bfdb-1bc1f7d57e65
 # ╟─96aa002c-cebc-41f7-97cf-ecd02081b6ce
 # ╠═866746a1-8102-431c-94e5-f93f6c98e825
 # ╟─d15f2d13-0885-4da2-950d-fbbdd83f3907
