@@ -89,7 +89,7 @@ md"""
 """
 
 # ╔═╡ c5e00f30-e734-4b59-97b9-8e5f59fd131e
-add_notebook_header = false
+add_notebook_header = true
 
 # ╔═╡ 0b81d3ff-fa78-48c3-878c-24f9d6a34f20
 show_section_number = false
