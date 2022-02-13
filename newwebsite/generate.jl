@@ -561,7 +561,7 @@ index_styles(root_dir=".") = @htl("""
 	""");
 
 # ╔═╡ 2234f31d-89f3-4e58-8d89-e7ae9aa5b2db
-index_footer = @htl("""
+index_footer = "" #= @htl("""
 <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-28835595-11"></script>
     <script>
@@ -570,7 +570,7 @@ index_footer = @htl("""
       gtag('js', new Date());
       gtag('config', 'UA-28835595-11');
     </script>
-	""");
+	""") =#;
 
 # ╔═╡ 669ca7b1-9433-4391-b849-2f1cc7f4aa49
 function html_page(content, root_dir::String=".")
