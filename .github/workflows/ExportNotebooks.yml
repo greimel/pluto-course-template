@@ -21,9 +21,17 @@ jobs:
             - name: Install Julia
               uses: julia-actions/setup-julia@v1
               with:
-                  version: 1.7
+                  version: 1
             - name: Run Pluto notebooks and generate website
-              run: cp generate.jl generate2.jl; julia -e 'import Pkg; Pkg.add("Pluto"); import Pluto; Pluto.activate_notebook_environment("generate2.jl"); Pkg.instantiate(); include("generate.jl")'
+              shell: julia --color=yes {0}
+              run: |
+                cp("generate.jl", "generate2.jl")
+                using Pkg
+                Pkg.add("Pluto")
+                import Pluto
+                Pluto.activate_notebook_environment("generate2.jl")
+                Pkg.instantiate()
+                include("generate.jl")
               working-directory: newwebsite
             - name: Build and Deploy
               uses: JamesIves/github-pages-deploy-action@releases/v3
