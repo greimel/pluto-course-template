@@ -79,7 +79,7 @@ available at `https://username.github.io/YourPackage.jl/` then the pre-path shou
 
 # ╔═╡ 88e1e91d-0d48-42e0-b4ab-4866624fd745
 begin
-	PREPATH = "18S191-reduced"
+	PREPATH = "pluto-course-template"
 	@skip_as_script PREPATH = ""
 end
 
