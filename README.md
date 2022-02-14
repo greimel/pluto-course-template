@@ -10,3 +10,9 @@ This is a fork of https://github.com/mitmath/18S191/pull/120 (by @fonsp). Change
 * make it work with prepath (e.g. the `pluto-course-template` in `https://greimel.github.io/pluto-course-template`)
 * combine with pure markdown pages (`using Franklin`)
 * deploys to GitHub Pages using GitHub Actions
+
+## Instructions
+
+Here is how to adjust the website to your needs.
+
+**[coming soon]**
