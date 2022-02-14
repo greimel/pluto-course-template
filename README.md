@@ -32,10 +32,10 @@ https://user-images.githubusercontent.com/6280307/153845320-2b0e68ba-8ca6-4810-b
 3. Open `newwebsite/generate.jl` from Pluto
 4. Do the customizations (especially prepath!)
 
-### 3. Enable github pages
+### 3. Enable GitHub Pages
 
 https://user-images.githubusercontent.com/6280307/153846538-1b79db97-cdb4-43fa-92d1-f3504363bb00.mov
 
-### 4. Wait for GithubActions to finish and check the result
+### 4. Wait for GitHub Actions to finish and check the result
 
 https://user-images.githubusercontent.com/6280307/153845247-48d66bed-ac4d-4b35-8f1a-e8738f190201.mov
