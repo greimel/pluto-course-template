@@ -468,6 +468,12 @@ end
 
 # ╔═╡ a965eb6b-8c70-4986-a7b1-99c820c45716
 @skip_as_script @use_task([franklin_page_dir, file_server_port]) do
+		
+	try
+		run(`sh -c "kill \$(lsof -t -i:4599)"`)
+	catch e
+    		"port $file_server_port is avaliable"
+	end
 
 	run(`$(Deno_jll.deno()) run --allow-net --allow-read https://deno.land/std@0.115.0/http/file_server.ts $(franklin_page_dir) --cors --port $(file_server_port)`)
 
