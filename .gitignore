@@ -1,4 +1,10 @@
 
 .DS_Store
 
-reduced_phil.png
+pluto_state_cache
+
+website/__site/
+build/
+website/config.md
+
+generate/*.toml

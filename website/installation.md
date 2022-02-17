@@ -1,13 +1,9 @@
 # First-time setup: Install Julia & Pluto
 
-**Video version:**
+### Acknowledgement
 
-{{youtube installation}}
+This material is taken from _**Computational Thinking**, a live online Julia/Pluto textbook._ [(computationalthinking.mit.edu)](https://computationalthinking.mit.edu)
 
-\\
-\\
-\\
-**Text and pictures version:**
 
 ## Step 1: Install Julia 1.6.0
 

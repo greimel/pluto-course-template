@@ -1,71 +1,33 @@
-name: Spring 21 - Export Pluto notebooks & Deploy
+name: Export Pluto notebooks & Deploy
 on:
     push:
         branches:
-            - Spring21
+            - main
     workflow_dispatch:
 
 jobs:
     build-and-deploy:
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout Spring 21 source
+            - name: Checkout repository
               uses: actions/checkout@v2
-
             - name: Set up notebook state cache
               uses: actions/cache@v2
               with:
-                  path: pluto_state_cache
-                  key: ${{ runner.os }}-pluto_state_cache-v2-${{ hashFiles('**/Project.toml', '**/Manifest.toml') }}-${{ hashFiles('**/*.jl') }}
-                  restore-keys: |
-                      ${{ runner.os }}-pluto_state_cache-v2-${{ hashFiles('**/Project.toml', '**/Manifest.toml') }}
-
-            - name: Checkout Fall 20 output
-              uses: actions/checkout@v2
-              with:
-                  path: Fall20-franklin-output
-                  ref: Fall20-franklin-output
-
+                path: pluto_state_cache
+                key: ${{ runner.os }}-pluto_state_cache-v2-${{ hashFiles('**/Project.toml', '**/Manifest.toml') }}-${{ hashFiles('**/*.jl') }}
+                restore-keys: |
+                    ${{ runner.os }}-pluto_state_cache-v2-${{ hashFiles('**/Project.toml', '**/Manifest.toml') }}
             - name: Install Julia
               uses: julia-actions/setup-julia@v1
               with:
-                  version: 1.6.0
-            - name: Run Pluto notebooks
-              run: julia --project=pluto-deployment-environment -e '
-                  import Pkg;
-                  Pkg.instantiate();
-
-                  using PlutoSliderServer;
-                  github_action("."; Export_cache_dir="pluto_state_cache");'
-            - name: Franklin
-              run: julia --project -e '
-                  using NodeJS;
-                  run(`$(npm_cmd()) install highlight.js`);
-
-                  "== Run Franklin ==";
-
-                  using Franklin;
-                  optimize(;minify=false);
-                  mkdir("__site2");
-                  mv("__site", "__site2/Spring21");
-                  mv("../Fall20-franklin-output/Fall20", "__site2/Fall20");
-
-                  "== Place rendered notebooks in the website folder ==";
-                  cp("../notebooks", "__site2/Spring21/notebooks");
-
-                  "== Extra website config files ==";
-                  write("__site2/index.html", """
-                  <!DOCTYPE html>
-                  <html>
-                  <head><meta charset="utf-8"><script>
-                  window.location.href=\"Spring21\"</script></head>
-                  <body></body></html>""");
-                  write("__site2/CNAME", "computationalthinking.mit.edu");'
-              working-directory: website
-
+                  version: 1.7
+            - name: Run Pluto notebooks and generate website
+              run: julia generate.jl
+              working-directory: newwebsite
             - name: Build and Deploy
               uses: JamesIves/github-pages-deploy-action@releases/v3
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  BRANCH: Spring21-franklin-output
-                  FOLDER: website/__site2
+                  BRANCH: gh-pages
+                  FOLDER: ./website/__site
