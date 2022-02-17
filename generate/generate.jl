@@ -88,6 +88,12 @@ md"""
 #### Add notebook header?
 """
 
+# ╔═╡ c5e00f30-e734-4b59-97b9-8e5f59fd131e
+add_notebook_header = true
+
+# ╔═╡ 0b81d3ff-fa78-48c3-878c-24f9d6a34f20
+show_section_number = false
+
 # ╔═╡ 01a2336a-5c04-4d5a-bb0b-a9c704517dbf
 pages = [
 	(page = "/logistics/", title = "Class Logistics"),
@@ -304,8 +310,51 @@ import Random
 # ╔═╡ 9979265f-60dd-42d4-9384-afaf4bf53ba2
 md"""Show header preview: $(@bind show_header_preview html"<input type=checkbox>")"""
 
+# ╔═╡ cebba3d4-f255-4039-bba4-0673ac4e700b
+function embed_youtube(video_id, title = "Lecture Video")
+	if video_id == ""
+		return ""
+	else
+		return @htl(
+			"""
+		 	<p style="
+		    font-size: 1.5rem;
+		    text-align: center;
+		    opacity: .8;
+		    ">$(emph(title))</p>
+		    <div style="display: flex; justify-content: center;">
+		    <div  notthestyle="position: relative; right: 0; top: 0; z-index: 300;">
+		    <iframe src="https://www.youtube.com/embed/$(video_id)" width=400 height=250  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+			</div>
+			
+		    </div>
+			"""
+		)
+	end
+end
+
+# ╔═╡ 2087dbd4-ea11-450f-92e3-4c24f3fa8f76
+function format_section_number(chapter_number, section_number)
+	@htl(
+		"""
+		<p style="
+    	font-size: 1.5rem;
+    	opacity: .8;
+    	">$(emph("Section $(chapter_number).$(section_number)"))</p>
+		"""	
+	)
+end	
+
 # ╔═╡ b007e5cc-d7c3-4275-86fd-9098bc398b23
-function notebook_header(section::Section, chapter_number::Integer, section_number::Integer)
+function notebook_header(section::Section, chapter_number::Integer, section_number::Integer; show_section_number=true)
+	has_video = section.video_id != ""
+	height = 180
+	if has_video
+		height = height + 250
+	end
+	if show_section_number
+		height = height + 70
+	end
     @htl("""
     <div style="
     position: absolute;
@@ -316,12 +365,12 @@ function notebook_header(section::Section, chapter_number::Integer, section_numb
     box-sizing: content-box;
     left: calc(-50vw + 15px);
     top: -500px;
-    height: 500px;
+    height: $(height)px;
     pointer-events: none;
     "></div>
 
     <div style="
-    height: 500px;
+    height: $(height)px;
     width: 100%;
     background: #282936;
     color: #fff;
@@ -331,25 +380,14 @@ function notebook_header(section::Section, chapter_number::Integer, section_numb
     font-family: Vollkorn, serif;
     font-weight: 700;
     font-feature-settings: 'lnum', 'pnum';
-    "> <p style="
-    font-size: 1.5rem;
-    opacity: .8;
-    "><em>Section $(chapter_number).$(section_number)</em></p>
+    "> 
+	$(show_section_number ? format_section_number(chapter_number, section_number) : "")
     <p style="text-align: center; font-size: 2rem;">
-    <em> $(section.name) </em>
+    $(emph(section.name))
     </p>
 
-    <p style="
-    font-size: 1.5rem;
-    text-align: center;
-    opacity: .8;
-    "><em>Lecture Video</em></p>
-    <div style="display: flex; justify-content: center;">
-    <div  notthestyle="position: relative; right: 0; top: 0; z-index: 300;">
-    <iframe src="https://www.youtube.com/embed/$(section.video_id)" width=400 height=250  frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-    </div>
-    </div>
-
+	$(embed_youtube(section.video_id))
+	
     <style>
     body {
     overflow-x: hidden;
@@ -359,14 +397,11 @@ end
 
 # ╔═╡ 48570953-88d3-4010-a5e3-2034bda26413
 if show_header_preview === true
-	notebook_header(book_model[1].contents[1], 1, 1)
+	notebook_header(book_model[2].contents[1], 1, 1; show_section_number=true)
 end
 
 # ╔═╡ 5f93b932-6739-4b7e-bfdb-1bc1f7d57e65
-notebook_header_code(args...) = "HTML($(repr(string(notebook_header(args...)))))"
-
-# ╔═╡ f731fc20-2660-484c-bcc7-fbc1809a3b4a
-notebook_header_code(book_model[1].contents[1], 1, 1)
+notebook_header_code(args...; kwargs...) = "HTML($(repr(string(notebook_header(args...; kwargs...)))))"
 
 # ╔═╡ 96aa002c-cebc-41f7-97cf-ecd02081b6ce
 md"""
@@ -524,7 +559,7 @@ index_styles(root_dir=".") = @htl("""
 	""");
 
 # ╔═╡ 2234f31d-89f3-4e58-8d89-e7ae9aa5b2db
-index_footer = @htl("""
+index_footer = "" #= @htl("""
 <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-28835595-11"></script>
     <script>
@@ -533,7 +568,7 @@ index_footer = @htl("""
       gtag('js', new Date());
       gtag('config', 'UA-28835595-11');
     </script>
-	""");
+	""") =#;
 
 # ╔═╡ 669ca7b1-9433-4391-b849-2f1cc7f4aa49
 function html_page(content, root_dir::String=".")
@@ -679,7 +714,7 @@ output_filenames = flatmap(enumerate(book_model)) do (chapter_number, chap)
 		my_rng = Random.MersenneTwister(123)
 
 		# generate code for the header
-		header_code = notebook_header_code(section, chapter_number, section_number)
+		header_code = add_notebook_header ? notebook_header_code(section, chapter_number, section_number; show_section_number) : ""
 		first_cell = Pluto.Cell(
 			code = header_code,
 			code_folded = true,
@@ -1319,6 +1354,8 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╟─5b7892c6-ca5c-4c3a-b5d8-0a6323ee2fa9
 # ╠═88e1e91d-0d48-42e0-b4ab-4866624fd745
 # ╟─2582ae89-616f-4a08-be81-0875362c1f7e
+# ╠═c5e00f30-e734-4b59-97b9-8e5f59fd131e
+# ╠═0b81d3ff-fa78-48c3-878c-24f9d6a34f20
 # ╠═02e00e09-76a5-4f38-8557-4d9caf280b4c
 # ╠═01a2336a-5c04-4d5a-bb0b-a9c704517dbf
 # ╠═c0768146-5ea0-4736-94f8-2c1a2affa922
@@ -1364,9 +1401,10 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╠═5ec6013c-da21-4cdb-b43f-16d997bc8446
 # ╠═adc183d3-2615-4334-88f0-2f8f0876b4b7
 # ╠═bb5bca01-8f95-49a5-8e50-2ad013c6b804
-# ╠═f731fc20-2660-484c-bcc7-fbc1809a3b4a
 # ╠═48570953-88d3-4010-a5e3-2034bda26413
 # ╟─9979265f-60dd-42d4-9384-afaf4bf53ba2
+# ╠═cebba3d4-f255-4039-bba4-0673ac4e700b
+# ╠═2087dbd4-ea11-450f-92e3-4c24f3fa8f76
 # ╠═b007e5cc-d7c3-4275-86fd-9098bc398b23
 # ╠═5f93b932-6739-4b7e-bfdb-1bc1f7d57e65
 # ╟─96aa002c-cebc-41f7-97cf-ecd02081b6ce
