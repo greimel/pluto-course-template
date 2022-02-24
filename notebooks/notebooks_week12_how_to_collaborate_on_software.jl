@@ -1,11 +1,8 @@
 ### A Pluto.jl notebook ###
-# v0.18.0
+# v0.18.1
 
 using Markdown
 using InteractiveUtils
-
-# ╔═╡ f5450eab-0f9f-4b7f-9b80-992d3c553ba9
-HTML("    <div style=\"\n    position: absolute;\n    width: calc(100% - 30px);\n    border: 50vw solid #282936;\n    border-top: 500px solid #282936;\n    border-bottom: none;\n    box-sizing: content-box;\n    left: calc(-50vw + 15px);\n    top: -500px;\n    height: 430px;\n    pointer-events: none;\n    \"></div>\n\n    <div style=\"\n    height: 430px;\n    width: 100%;\n    background: #282936;\n    color: #fff;\n    padding-top: 68px;\n    \">\n    <span style=\"\n    font-family: Vollkorn, serif;\n    font-weight: 700;\n    font-feature-settings: 'lnum', 'pnum';\n    \"> \n\t\n    <p style=\"text-align: center; font-size: 2rem;\">\n    <em>GitHub &amp; Open Source Software</em>\n    </p>\n\n\t \t<p style=\"\n    font-size: 1.5rem;\n    text-align: center;\n    opacity: .8;\n    \"><em>Lecture Video</em></p>\n    <div style=\"display: flex; justify-content: center;\">\n    <div  notthestyle=\"position: relative; right: 0; top: 0; z-index: 300;\">\n    <iframe src=\"https://www.youtube.com/embed/7N9Vvc8amGM\" width=400 height=250  frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe></div>\n\t</div>\n\t\n    </div>\n\t\n\t\n    <style>\n    body {\n    overflow-x: hidden;\n    }\n    </style>")
 
 # ╔═╡ 10ebd434-adba-11eb-048f-2d084049d48f
 
