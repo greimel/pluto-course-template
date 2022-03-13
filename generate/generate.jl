@@ -21,22 +21,19 @@ using JSON3
 using HypertextLiteral
 
 # ╔═╡ 6a3614fb-81bd-474d-85cf-06725846a6c0
-using PlutoUI
+using PlutoUI: TableOfContents, Button
 
 # ╔═╡ b14f33ae-89a7-473b-ac9b-1db0208faca7
 using PlutoSliderServer, Logging
 
 # ╔═╡ d45c8768-87e2-4f3c-8763-089ec43f1733
-using Pluto: without_pluto_file_extension
+using Pluto: Pluto, without_pluto_file_extension
 
 # ╔═╡ c64ebd9b-66a3-4f6c-8f8b-36f6b9ce8f19
-using PlutoHooks
+using PlutoHooks: @skip_as_script
 
 # ╔═╡ fb914eec-bc9c-4dd4-b92e-f507c7d0b150
 using PlutoLinks: @use_task
-
-# ╔═╡ 7c55e578-f269-4570-bd98-b1bf22eb0f36
-using PlutoTest: @skip_as_script
 
 # ╔═╡ 6ee83d91-b1d1-4b1e-95ca-6874e44167da
 using UUIDs
@@ -161,9 +158,6 @@ end
 
 # ╔═╡ 43969dd1-f175-4399-8758-5a69f94595e7
 book_model = JSON3.read(read("./book_model.json", String), Vector{Chapter})
-
-# ╔═╡ 91ca4a45-137c-4378-803b-c6b2f036ac96
-import Pluto
 
 # ╔═╡ ec4ac489-8b49-4c2d-be87-21bb3f70e06a
 md"""
@@ -454,7 +448,7 @@ begin
 	franklin_page_dir = joinpath(website_dir, "__site")
 	if isdir(franklin_page_dir)
 		rm(franklin_page_dir, recursive = true)
-		@info "removed" franklin_page_dir
+		#@info "removed" franklin_page_dir
 	end
 	mkpath(franklin_page_dir)
 	franklin_config()
@@ -789,7 +783,6 @@ Pluto = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
 PlutoHooks = "0ff47ea0-7a50-410d-8455-4348d5de0774"
 PlutoLinks = "0ff47ea0-7a50-410d-8455-4348d5de0420"
 PlutoSliderServer = "2fc8631c-6f24-4c5b-bca7-cbb509c42db4"
-PlutoTest = "cb4044da-4d16-4ffa-a6a3-8cad7f73ebdc"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 StructTypes = "856f2bd8-1eba-4b0a-8007-ebc267875bd4"
@@ -805,7 +798,6 @@ Pluto = "~0.18.0"
 PlutoHooks = "~0.0.4"
 PlutoLinks = "~0.1.4"
 PlutoSliderServer = "~0.3.5"
-PlutoTest = "~0.2.1"
 PlutoUI = "~0.7.34"
 StructTypes = "~1.8.1"
 """
@@ -1191,12 +1183,6 @@ git-tree-sha1 = "dd581e8ec86d860e3668f48d439a0522ef274e3f"
 uuid = "2fc8631c-6f24-4c5b-bca7-cbb509c42db4"
 version = "0.3.5"
 
-[[deps.PlutoTest]]
-deps = ["HypertextLiteral", "InteractiveUtils", "Markdown", "Test"]
-git-tree-sha1 = "cd214d5c737563369887ac465a6d3c0fd7c1f854"
-uuid = "cb4044da-4d16-4ffa-a6a3-8cad7f73ebdc"
-version = "0.2.1"
-
 [[deps.PlutoUI]]
 deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "Markdown", "Random", "Reexport", "UUIDs"]
 git-tree-sha1 = "8979e9802b4ac3d58c503a20f2824ad67f9074dd"
@@ -1375,13 +1361,11 @@ uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
 # ╠═0abe998c-f69c-49de-a49f-6c4bbcb6c4e1
 # ╠═43969dd1-f175-4399-8758-5a69f94595e7
 # ╠═b14f33ae-89a7-473b-ac9b-1db0208faca7
-# ╠═91ca4a45-137c-4378-803b-c6b2f036ac96
 # ╠═d45c8768-87e2-4f3c-8763-089ec43f1733
 # ╟─ec4ac489-8b49-4c2d-be87-21bb3f70e06a
 # ╠═c64ebd9b-66a3-4f6c-8f8b-36f6b9ce8f19
 # ╠═fb914eec-bc9c-4dd4-b92e-f507c7d0b150
 # ╠═680b5653-a0a0-48ad-87ca-583a1655a05c
-# ╠═7c55e578-f269-4570-bd98-b1bf22eb0f36
 # ╠═c012ae32-3b48-460c-8b1a-0b3e06f5fda0
 # ╠═06bfaeee-a6ee-439c-b965-94d0455b0337
 # ╠═35b80456-039e-45bc-963e-5466a3e9c3a7
