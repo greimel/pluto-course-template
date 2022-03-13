@@ -24,7 +24,7 @@ using HypertextLiteral
 using PlutoUI
 
 # ╔═╡ b14f33ae-89a7-473b-ac9b-1db0208faca7
-using PlutoSliderServer
+using PlutoSliderServer, Logging
 
 # ╔═╡ d45c8768-87e2-4f3c-8763-089ec43f1733
 using Pluto: without_pluto_file_extension
@@ -736,7 +736,9 @@ end
 notebook_htmls_generated = let
 	output_filenames
 	
-	PlutoSliderServer.export_directory(pluto_notebooks_output_dir; Export_cache_dir=pluto_cache_dir)
+	Logging.with_logger(Logging.NullLogger()) do
+		PlutoSliderServer.export_directory(pluto_notebooks_output_dir; Export_cache_dir=pluto_cache_dir)
+	end
 end; GENERATED_NOTEBOOKS = 0
 
 # ╔═╡ ccdea15d-1182-4d96-a7ab-26aa59a6002e
