@@ -459,7 +459,9 @@ begin
 	mkpath(franklin_page_dir)
 	franklin_config()
 	cd(website_dir)
-	Franklin.optimize(; minify = false)
+	Logging.with_logger(Logging.NullLogger()) do
+		Franklin.optimize(; minify = false)
+	end
 	#cp(joinpath(website_dir, "__site"), franklin_page_dir, force = true)
 	cd(current_dir)
 end
@@ -782,6 +784,7 @@ Deno_jll = "04572ae6-984a-583e-9378-9577a1c2574d"
 Franklin = "713c75ef-9fc9-4b05-94a9-213340da978e"
 HypertextLiteral = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
 JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
 Pluto = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
 PlutoHooks = "0ff47ea0-7a50-410d-8455-4348d5de0774"
 PlutoLinks = "0ff47ea0-7a50-410d-8455-4348d5de0420"
