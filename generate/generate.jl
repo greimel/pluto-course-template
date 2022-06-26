@@ -52,13 +52,13 @@ md"""
 """
 
 # ╔═╡ 2bee2fc7-3322-457f-a835-028c80eaf059
-TITLE = "A Great Course"
+TITLE = "Topics in Distributional Macroeconomics"
 
 # ╔═╡ a0057e4c-0bcf-4970-8a2b-0412ad5af510
-SUBTITLE = "Content and Code"
+SUBTITLE = "PhD-level Elective Course"
 
 # ╔═╡ 4be56e57-fea0-4fbe-9659-44bed594b1b2
-INSTITUTION = "University of Greatness"
+INSTITUTION = "Tinbergen Institute"
 
 # ╔═╡ c9f17f9f-766a-4137-92c5-f8173561a7bc
 INSTITUTION_URL = "https://www.tinbergen.nl"
@@ -87,7 +87,7 @@ available at `https://username.github.io/YourPackage.jl/` then the pre-path shou
 
 # ╔═╡ 88e1e91d-0d48-42e0-b4ab-4866624fd745
 begin
-	PREPATH = "pluto-course-template"
+	PREPATH = "distributional-macroeconomics"
 	@skip_as_script PREPATH = ""
 end
 
@@ -97,7 +97,7 @@ md"""
 """
 
 # ╔═╡ c5e00f30-e734-4b59-97b9-8e5f59fd131e
-add_notebook_header = true
+add_notebook_header = false
 
 # ╔═╡ 0b81d3ff-fa78-48c3-878c-24f9d6a34f20
 show_section_number = false
@@ -222,8 +222,9 @@ end
 
 # ╔═╡ 3e93e57c-3660-416f-9874-d43abf99e60e
 INSTRUCTORS = [
-	(name = "Person 1", url = ""),
-	(name = "Person 2", url = "")
+	(name = "Fabian Greimel", url = "https://www.greimel.eu/"),
+	(name = "Stefanie J. Huber", url = "https://sites.google.com/site/stefaniehuber/"),
+	(name = "Enrico Perotti", url = "https://www.enricoperotti.eu/"),
 ] |> instructors
 
 # ╔═╡ d78c58e5-3ecb-45ee-972e-20fc90ece3cc
