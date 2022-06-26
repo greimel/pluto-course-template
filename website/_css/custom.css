@@ -22,7 +22,7 @@ body {
     z-index: 2;
     overflow-y: auto;
     overflow-x: hidden;
-    background-color: #282936;
+    background-color: #2E3D7E;
 }
 
 .content {
@@ -127,7 +127,7 @@ pre.code-output {
     font-style: italic;
     display: flex;
     align-items: center;
-    color: #d9a200;
+    color: #D8AB68;
     margin-top: 1em;
 }
 .sidebar-nav .course-section::before,
