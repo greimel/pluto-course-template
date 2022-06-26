@@ -1,5 +1,5 @@
-pages:
-  stage: deploy
+julia:
+  stage: build
   image: julia:1
   script:
     - cd generate
@@ -11,13 +11,19 @@ pages:
           Pkg.instantiate();
           include("generate.jl")'
     - cd ..
+  artifacts:
+    paths:
+      - website/__site
+  cache:
+    paths:
+      - pluto_state_cache
+
+pages:
+  stage: deploy
+  script:
     - mv ./website/__site public
   artifacts:
     paths:
       - public
   rules:
       - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  cache:
-    paths:
-      - pluto_state_cache
-
