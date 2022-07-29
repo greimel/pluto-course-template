@@ -3,11 +3,16 @@ julia:
   image: julia:1
   script:
     - cd generate
+    # Save create package environment from notebook
+    #   (write_nb_to_dir modifies changes the cell order 
+    #    if macros are involved hence we want to call it 
+    #    on a copy of the notebook)
     - cp generate.jl generate2.jl
     - julia -e '
           import Pkg;
           Pkg.add("Pluto"); import Pluto;
           Pluto.PkgUtils.write_nb_to_dir("./generate2.jl", ".")'
+    # generate website
     - julia --project=. -e '
           import Pkg;
           Pkg.instantiate();
