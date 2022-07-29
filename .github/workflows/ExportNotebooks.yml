@@ -1,5 +1,6 @@
 name: Export Pluto notebooks & Deploy
 on:
+    pull_request:
     push:
         branches:
             - main
@@ -40,8 +41,16 @@ jobs:
                     include("generate.jl")
                     '
               working-directory: generate
-            - name: Build and Deploy
+              
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v2
+              with:
+                  name: website
+                  path: ./website/__site
+                  
+            - name: Deploy to gh-pages
               uses: JamesIves/github-pages-deploy-action@releases/v3
+              if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   BRANCH: gh-pages
