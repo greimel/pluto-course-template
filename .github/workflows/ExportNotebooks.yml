@@ -1,4 +1,4 @@
-name: Export Pluto notebooks & Deploy
+name: Export & Deploy Notebooks
 on:
     pull_request:
     push:
