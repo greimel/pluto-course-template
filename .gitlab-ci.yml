@@ -7,7 +7,9 @@ julia:
     - julia -e '
           import Pkg;
           Pkg.add("Pluto"); import Pluto;
-          Pluto.activate_notebook_environment("generate2.jl");
+          Pluto.PkgUtils.write_nb_to_dir("./generate2.jl", ".")'
+    - julia --project=. -e '
+          import Pkg;
           Pkg.instantiate();
           include("generate.jl")'
     - cd ..
