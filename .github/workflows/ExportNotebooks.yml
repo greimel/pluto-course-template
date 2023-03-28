@@ -40,11 +40,6 @@ jobs:
                 Pluto.activate_notebook_environment(joinpath(dir1, "generate2.jl"))
                 Pkg.instantiate()
                 include(joinpath(dir1, "generate.jl"))
-                cp generate.jl generate2.jl
-                julia -e '
-                    import Pkg; Pkg.add("Pluto"); import Pluto;
-                    Pluto.PkgUtils.write_nb_to_dir("./generate2.jl", ".")
-                    '
               
             - name: Upload artifacts
               uses: actions/upload-artifact@v2
