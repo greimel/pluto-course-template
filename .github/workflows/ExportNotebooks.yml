@@ -24,23 +24,27 @@ jobs:
               with:
                   version: 1.7
             - name: Run Pluto notebooks and generate website
-              run: |
                 # Save create package environment from notebook
                 #   (write_nb_to_dir modifies changes the cell order 
                 #    if macros are involved hence we want to call it 
                 #    on a copy of the notebook)
+              shell: julia --color=yes --project=. {0} 
+              run: |
+                dir0 = pwd()
+                dir1 = joinpath(dir0, "generate")
+                cd(dir1)
+                run(`cp generate.jl generate2.jl`)
+                import Pkg
+                Pkg.add(Pkg.PackageSpec(name="Pluto", version="0.18"))
+                import Pluto
+                Pluto.activate_notebook_environment(joinpath(dir1, "generate2.jl"))
+                Pkg.instantiate()
+                include(joinpath(dir1, "generate.jl"))
                 cp generate.jl generate2.jl
                 julia -e '
                     import Pkg; Pkg.add("Pluto"); import Pluto;
                     Pluto.PkgUtils.write_nb_to_dir("./generate2.jl", ".")
                     '
-                # generate website
-                julia --project=. -e '
-                    import Pkg;
-                    Pkg.instantiate();
-                    include("generate.jl")
-                    '
-              working-directory: generate
               
             - name: Upload artifacts
               uses: actions/upload-artifact@v2
