@@ -1,4 +1,4 @@
-name: Fall 22 - Export Pluto notebooks & Deploy
+name: Export Pluto notebooks & Deploy
 on:
     push:
         branches:
@@ -18,7 +18,7 @@ jobs:
             - name: 🙌 Install Julia
               uses: julia-actions/setup-julia@v1
               with:
-                  version: "1.8"
+                  version: "~1.10.0-0"
 
             - name: ⏱ Cache notebook states
               uses: actions/cache@v2
