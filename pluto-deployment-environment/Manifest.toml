@@ -2,7 +2,7 @@
 
 julia_version = "1.10.0-beta1"
 manifest_format = "2.0"
-project_hash = "0b0ae4ebf7afeaf070e2eacf1b90bd8eb69cba53"
+project_hash = "1897773a8065215ef94f8d665d12f3684212efac"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -327,6 +327,11 @@ git-tree-sha1 = "6a125e6a4cb391e0b9adbd1afa9e771c2179f8ef"
 uuid = "aa1ae85d-cabe-5617-a682-6adf51b2e16a"
 version = "0.9.23"
 
+[[deps.LRUCache]]
+git-tree-sha1 = "48c10e3cc27e30de82463c27bef0b8bdbd1dc634"
+uuid = "8ac3fa9e-de4c-5943-b1dc-09c6b5f20637"
+version = "1.4.1"
+
 [[deps.LazilyInitializedFields]]
 git-tree-sha1 = "410fe4739a4b092f2ffe36fcb0dcc3ab12648ce1"
 uuid = "0e77f7df-68c5-4e49-93ce-4cd80f5598bf"
@@ -416,6 +421,12 @@ version = "1.1.7"
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
 version = "2.28.2+0"
+
+[[deps.Memoize]]
+deps = ["MacroTools"]
+git-tree-sha1 = "2b1dfcba103de714d31c033b5dacc2e4a12c7caa"
+uuid = "c03570c3-d221-55d1-a50c-7939bbd78826"
+version = "0.4.4"
 
 [[deps.MicroCollections]]
 deps = ["BangBang", "InitialValues", "Setfield"]

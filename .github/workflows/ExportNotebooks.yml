@@ -12,7 +12,7 @@ jobs:
     build-and-deploy:
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout Fall 22 source
+            - name: Checkout Fall 23 source
               uses: actions/checkout@v2
 
             - name: 🙌 Install Julia
@@ -52,7 +52,7 @@ jobs:
             - name: 🔀 Combine semesters into single site
               run: |
                 mkdir www
-                mv _site www/Fall22
+                mv _site www/Fall23
                 mv extra_outputs/* www
 
             - name: 🚀 Deploy to GitHub Pages
