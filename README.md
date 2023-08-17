@@ -1,22 +1,24 @@
-# 18.S191: Introduction to computational thinking for real-world problems
+# pluto-course-template
 
-<p align="center"><a href="https://computationalthinking.mit.edu/"> <b>Go to course website</b> :balloon:</a></p>
+Template for a course website based on https://computationalthinking.mit.edu/Fall23/
 
-Welcome to **MIT 18.S191 aka 6.S083 aka 22.S092**, **Fall 2023** edition!
-_For older semesters, see:
-- Fall 2022: [source code](https://github.com/mitmath/18S191/tree/Fall22) and [website](https://computationalthinking.mit.edu/Fall23/semesters/)
-- Spring 2021: [source code](https://github.com/mitmath/18S191/tree/Fall23) and [website](https://computationalthinking.mit.edu/Fall23/semesters/)
-- Fall 2020: [source code](https://github.com/mitmath/18S191/tree/Fall20) and [website](https://computationalthinking.mit.edu/Fall23/semesters/)
-- Spring 2020: [website](https://computationalthinking.mit.edu/Fall23/semesters/)
-- Fall 2019: [source code](https://github.com/dpsanders/6.S083_fall_2019/tree/fall_2019)
+#### see the [website this template generates](https://greimel.github.io/pluto-course-template)
 
-This is an introductory course on Computational Thinking. We use the [Julia programming language](http://www.julialang.org) to approach real-world problems in varied areas applying data analysis and computational and mathematical modeling. In this class you will learn computer science, software, algorithms, applications, and mathematics as an integrated whole.
+This is a fork of https://github.com/mitmath/computational-thinking/tree/Fall23. Changes:
 
-Topics include:
+* repository reduced to a minimal example
+* can also deploy to GitLab Pages (via GitLab CI) – in addition to GitHub Pages.
 
--   Image analysis
--   Machine Learning
--   Network theory
--   Climate modeling
+## Instructions
 
-# Go to [computationalthinking.mit.edu](https://computationalthinking.mit.edu/Spring21/) to learn more!
+Here is how to adjust the website to your needs.
+
+1. Generate the repository
+2. Customize the content in `src/`
+   * customize the sidebar in `sidebar data.jl`
+   * add your own notebooks (you need to add metadata)
+   * add additional pages
+3. Push to GitHub - wait for GitHub Actions to finish
+5. Enable GitHub Pages, choose branch `output`
+6. On the repository's landing page, add a link to repo's pages
+7. Wait for GitHub Actions to finish and check the result 
