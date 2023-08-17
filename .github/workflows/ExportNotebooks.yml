@@ -2,7 +2,7 @@ name: Export Pluto notebooks & Deploy
 on:
     push:
         branches:
-            - Fall22
+            - main
     workflow_dispatch:
 concurrency:
     group: export
@@ -36,18 +36,6 @@ jobs:
                 restore-keys: |
                     ${{ runner.os }}-dotjulia-v1-${{ hashFiles('**/Project.toml', '**/Manifest.toml') }}
 
-            # - name: 📅 Checkout Fall 20 output
-            #   uses: actions/checkout@v2
-            #   with:
-            #       path: Fall20-franklin-output
-            #       ref: Fall20-franklin-output
-
-            - name: 📅 Checkout Fall20 and Spring21 output
-              uses: actions/checkout@v2
-              with:
-                  path: Spring21-franklin-output
-                  ref: Spring21-franklin-output
-
             - name: 🪴 Generate site
               run: julia --project=pluto-deployment-environment -e '
                   import Pkg;
@@ -55,7 +43,6 @@ jobs:
 
                   include("./generate.jl")'
 
-            
             - name: 📰 Upload site generation report
               uses: actions/upload-artifact@v2
               if: always()
@@ -66,13 +53,11 @@ jobs:
               run: |
                 mkdir www
                 mv _site www/Fall22
-                mv Spring21-franklin-output/Fall20/ www/Fall20
-                mv Spring21-franklin-output/Spring21/ www/Spring21
                 mv extra_outputs/* www
 
             - name: 🚀 Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@releases/v3
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  BRANCH: Fall22-output
+                  BRANCH: output
                   FOLDER: www

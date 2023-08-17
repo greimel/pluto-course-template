@@ -1,4 +1,5 @@
 $(begin
+    using MarkdownLiteral: @markdown
     import Pluto
     "The contents of `<head>` from a Pluto HTML export."
     const pluto_head = let
@@ -23,6 +24,15 @@ $(begin
         se = get(frontmatter, "section", nothing)
         
         isnothing(ch) || isnothing(se) ? nothing : "$(ch).$(se)"
+    end
+
+    hyperlink(href, description) = @htl("<a href=$(href)>$(description)</a>")
+
+    function by_authors(authors) 
+        tmp = map(authors) do (; name, url)
+            hyperlink(url, name)
+        end
+        "by " * join(tmp, ", ", " &amp ") |> HTML
     end
     
     nothing
@@ -61,26 +71,35 @@ $(pluto_head)
         <nav id="pages-sidebar">
         <div>
         <ul>
-            <li class="sidebar-about">
-                <div class="course-title">
-                    <h1><a href="$(root_url)"><span>Introduction to</span> <span>Computational Thinking</span></a></h1>
-                    <h2><span>Math from computation</span>, <span>math with computation</span></h2>
-                </div>
-                <div class="authors">
-                    by <a href="http://math.mit.edu/~edelman">Alan Edelman</a>, <a href="http://sistemas.fciencias.unam.mx/~dsanders/">David P. Sanders</a> &amp; <a href="https://people.csail.mit.edu/cel/">Charles E. Leiserson</a>
-                </div>
-            </li>
-            <li>
-                <div class="search-bar">
-                    <form action="$(root_url)/search" method="GET">
-                        <input type="search" name="q" placeholder="Search...">
-                        <input type=submit value="🔎">
-                    </form>
-                </div>
-            </li>
+            $(let
+                sidebar_data = Base.include(@__MODULE__, joinpath(@__DIR__, "..", "sidebar data.jl"))
+                about = sidebar_data[:about]
+
+                @htl("""
+                    <li class="sidebar-about">
+                        <div class="course-title">
+                            
+                            <h1><a href="$(root_url)"><span>$(about[:title])</span></a></h1>
+                            <h2><span>$(about[:subtitle])</h2>
+                        </div>
+                        <div class="authors">
+                            $(by_authors(about[:authors]))
+                        </div>
+                    </li>
+                    <li>
+                        <div class="search-bar">
+                            <form action="$(root_url)/search" method="GET">
+                                <input type="search" name="q" placeholder="Search...">
+                                <input type=submit value="🔎">
+                            </form>
+                        </div>
+                    </li>
+                """)
+            end)
+            
         $(let
             sidebar_data = Base.include(@__MODULE__, joinpath(@__DIR__, "..", "sidebar data.jl"))
-            sections = sidebar_data["main"]
+            sections = sidebar_data[:main]
         
             [
                 @htl("""
@@ -123,19 +142,22 @@ $(pluto_head)
         end)
                 <li><hr></li>
             <li class="sidebar-about">
+                $(begin 
+                sidebar_data = Base.include(@__MODULE__, joinpath(@__DIR__, "..", "sidebar data.jl"))
+                about = sidebar_data[:about]
+
+                @htl("""
                 <div class="semester-details">
-                    <a href="$(root_url)/semesters/">Fall 2022</a>
-                    <div class="course-numbers"><span>18.S191</span> / <span>6.S083</span> / <span>22.S092</span></div>
+                    <a href="$(root_url)/semesters/">$(about[:term])</a>
                 </div>
                 <div class="logos">
-                    <picture title="Massachusetts Institute of Technology">
-                        <img src="$(root_url)/assets/MIT_logo.svg">
-                    </picture>
-                    <picture title="Julia Programming Language">
-                        <source srcset="$(root_url)/assets/julia-logo-dark.svg" media="(prefers-color-scheme: dark)" />
-                        <img src="$(root_url)/assets/julia-logo-color.svg">
+                    <picture title=$(about[:institution])>
+                        <source srcset="$(root_url)/assets/$(about[:institution_logo_darkmode])" media="(prefers-color-scheme: dark)" />
+                        <img src="$(root_url)/assets/$(about[:institution_logo])">
                     </picture>
                 </div>
+                """)
+                end)
             </li>
         </ul>
         </div>
