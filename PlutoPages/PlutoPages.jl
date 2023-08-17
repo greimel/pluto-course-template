@@ -390,7 +390,7 @@ md"""
 """
 
 # ╔═╡ c52c9786-a25f-11ec-1fdc-9b13922d7ccb
-const dir = joinpath(@__DIR__, "src")
+const dir = joinpath(@__DIR__, "..", "content")
 
 # ╔═╡ cf27b3d3-1689-4b3a-a8fe-3ad639eb2f82
 md"""

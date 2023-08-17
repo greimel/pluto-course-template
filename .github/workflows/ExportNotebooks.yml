@@ -1,4 +1,6 @@
 name: Export Pluto notebooks & Deploy
+permissions:
+    contents: write
 on:
     push:
         branches:
@@ -37,11 +39,11 @@ jobs:
                     ${{ runner.os }}-dotjulia-v1-${{ hashFiles('**/Project.toml', '**/Manifest.toml') }}
 
             - name: 🪴 Generate site
-              run: julia --project=pluto-deployment-environment -e '
+              run: julia --project=PlutoPages/pluto-deployment-environment -e '
                   import Pkg;
                   Pkg.instantiate();
 
-                  include("./generate.jl")'
+                  include("./PlutoPages/generate.jl")'
 
             - name: 📰 Upload site generation report
               uses: actions/upload-artifact@v2
@@ -52,8 +54,8 @@ jobs:
             - name: 🔀 Combine semesters into single site
               run: |
                 mkdir www
-                mv _site www/Fall23
-                mv extra_outputs/* www
+                mv PlutoPages/_site www/Fall23
+                mv PlutoPages/extra_outputs/* www
 
             - name: 🚀 Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@releases/v3
