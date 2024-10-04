@@ -54,8 +54,8 @@ jobs:
             - name: 🔀 Combine semesters into single site
               run: |
                 mkdir www
-                mv PlutoPages/_site www/Fall23
-                mv PlutoPages/extra_outputs/* www
+                mv _site www/Fall23
+                mv extra_outputs/* www
 
             - name: 🚀 Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@releases/v3
