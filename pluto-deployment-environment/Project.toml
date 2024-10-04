@@ -1,0 +1,3 @@
+[deps]
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+PlutoPages = "d5dc3dd1-4774-47c7-8860-0a1ad9e34b8c"
