@@ -1,3 +1,5 @@
 [deps]
+MarkdownLiteral = "736d6165-7244-6769-4267-6b50796e6954"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+Pluto = "c3e4b0f8-55cb-11ea-2926-15256bba5781"
 PlutoPages = "d5dc3dd1-4774-47c7-8860-0a1ad9e34b8c"
